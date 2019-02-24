@@ -13,22 +13,11 @@
 
 (def add-trailing-zeros (comp reverse add-front-zeros reverse))
 
-; start
+(def transpose (partial apply map list))
 
-(def move-right (comp
-                 add-front-zeros
-                 combine-tiles
-                 get-tiles-to-be-merged
-                 partition-by-identity
-                 filter-zeros))
+(def move-right (comp add-front-zeros combine-tiles get-tiles-to-be-merged partition-by-identity filter-zeros))
 
-(def move-left (comp
-                add-trailing-zeros
-                combine-tiles
-                get-tiles-to-be-merged
-                partition-by-identity
-                filter-zeros))
-
+(def move-left (comp add-trailing-zeros combine-tiles get-tiles-to-be-merged partition-by-identity filter-zeros))
 
 (defn move-grid-right
   "Moves an entire grid to the right"
@@ -40,12 +29,10 @@
   [grid]
   (map move-left grid))
 
-(defn move-grid-down
+(def move-grid-down
   "Moves an entire grid down"
-  [grid]
-  grid)
+  (comp transpose move-grid-right transpose))
 
-(defn move-grid-up
+(def move-grid-up
   "Moves an entire grid up"
-  [grid]
-  grid)
+  (comp transpose move-grid-left transpose))
